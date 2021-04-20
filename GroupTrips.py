@@ -1,25 +1,27 @@
-from subzone import *
+from database import *
 from TripsAggregaters import *
 from python_tsp.exact import solve_tsp_dynamic_programming
 import numpy
 
 class GroupTrips:
 
-    def __init__(self, groupNumber, origin1, origin2,origin3,origin4):
+    def __init__(self, groupNumber):
         self.groupNumber = groupNumber
-        self.origin1 = origin1
-        self.origin2 = origin2
-        self.origin3 = origin3
-        self.origin4 = origin4
+        self.group_origins = []
         self.distance_matrix = []
 
-
-    def distance_matrix_calculator(self, origin1, origin2, origin3, origin4):
-        self.distance_matrix.insert(0,[distances[subzones.index(origin1)][subzones.index(origin1)], distances[subzones.index(origin1)][subzones.index(origin2)], distances[subzones.index(origin1)][subzones.index(origin3)],distances[subzones.index(origin1)][subzones.index(origin4)]])
-        self.distance_matrix.insert(1,[distances[subzones.index(origin2)][subzones.index(origin1)], distances[subzones.index(origin2)][subzones.index(origin2)], distances[subzones.index(origin2)][subzones.index(origin3)],distances[subzones.index(origin2)][subzones.index(origin4)]])
-        self.distance_matrix.insert(2,[distances[subzones.index(origin3)][subzones.index(origin1)], distances[subzones.index(origin3)][subzones.index(origin2)], distances[subzones.index(origin3)][subzones.index(origin3)],distances[subzones.index(origin3)][subzones.index(origin4)]])
-        self.distance_matrix.insert(3,[distances[subzones.index(origin4)][subzones.index(origin1)], distances[subzones.index(origin4)][subzones.index(origin2)], distances[subzones.index(origin4)][subzones.index(origin3)],distances[subzones.index(origin4)][subzones.index(origin4)]])
-
+    def distance_matrix_calculator(self):
+        lines = 0
+        set_of_origins = []
+        number_of_origins = len(self.group_origins)
+        while (lines < number_of_origins):
+            columns = 0
+            set_of_origins.clear()
+            while(columns < number_of_origins):
+                set_of_origins.append(distances[zone_and_subzones.index(self.group_origins[lines])][zone_and_subzones.index(self.group_origins[columns])])
+                columns = columns + 1
+            self.distance_matrix.insert(lines, set_of_origins.copy())
+            lines = lines + 1
 
     def minimum_route_distance_calculator(self):
         newDistanceArray = numpy.array(self.distance_matrix)

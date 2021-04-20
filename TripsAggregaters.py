@@ -1,23 +1,25 @@
-from subzone import *
+from database import *
 from random import *
 from GroupTrips import *
 from math import trunc
 
 # Generate random trips
 tripOrigins = []
+number_of_origins = len(origins)
 i = 0
 while (i < totaltrips):
     origin = random()
-    if (origin <= graduation[0]):
-        tripOrigins.append(subzones[0])
+    index = 0
+    if ((index == 0) and (origin <= graduation[index])):
+            tripOrigins.append(origins[index])
     else:
-        if (origin <= graduation[1]):
-            tripOrigins.append(subzones[1])
-        else:
-            tripOrigins.append(subzones[2])
+        while (index < number_of_origins):
+            if((origin <= graduation[index]) and (origin > graduation[index-1])):
+                tripOrigins.append(origins[index])
+            index = index + 1
     i = i + 1
 
-print(tripOrigins)
+
 # Aggregate trips
 i=0
 index = 0
@@ -25,8 +27,13 @@ number_of_groups = trunc(totaltrips/vehicleCapacity)
 gtrips = []
 
 while (index < totaltrips):
-    gtrips.append(GroupTrips( i, tripOrigins[index], tripOrigins[index+1], tripOrigins[index+2], tripOrigins[index+3]))
-    gtrips[i].distance_matrix_calculator(tripOrigins[index], tripOrigins[index+1], tripOrigins[index+2], tripOrigins[index+3])
+    gtrips.append(GroupTrips(i))
+    x = 0
+    for x in range(vehicleCapacity):
+        gtrips[i].group_origins.append(tripOrigins[index+x])
+        x = x + 1
+    gtrips[i].group_origins.insert(0, zoneCentroid[0])
+    gtrips[i].distance_matrix_calculator()
     gtrips[i].minimum_route_distance_calculator()
     index = index + vehicleCapacity
     i=i + 1
