@@ -11,17 +11,18 @@ class GroupTrips:
         self.distance_matrix = []
 
     def distance_matrix_calculator(self):
-        lines = 0
+        org = 0
         set_of_origins = []
         number_of_origins_groups = len(self.group_origins)
-        while (lines < number_of_origins_groups):
+        for org in range(number_of_origins_groups):
             columns = 0
-            set_of_origins.clear()
-            while(columns < number_of_origins_groups):
-                set_of_origins.append(distances[zone_and_subzones.index(self.group_origins[lines])][zone_and_subzones.index(self.group_origins[columns])])
+            for columns in range(number_of_origins_groups):
+                set_of_origins.append(distances[zone_and_subzones.index(self.group_origins[org])][zone_and_subzones.index(self.group_origins[columns])])
                 columns = columns + 1
-            self.distance_matrix.insert(lines, set_of_origins.copy())
-            lines = lines + 1
+            self.distance_matrix.append(set_of_origins.copy())
+            set_of_origins.clear()
+            org = org + 1
+
 
     def minimum_route_distance_calculator(self):
         newDistanceArray = numpy.array(self.distance_matrix)

@@ -1,14 +1,54 @@
+import pandas as pd
+import numpy as np
+import openpyxl
+
 # Database
-distanceToCentroid: [ 1, 2, 4]
-zoneCentroid = ["can"]
-origins = ["can1", "can2", "can3"]
+vehicleCapacity = 8
+totaltrips = 800
+
+
+file = pd.read_excel("zones.xlsx")
+print(file)
+data = pd.DataFrame(file)
+data2 = data.to_numpy()
+d3 = np.array(data2)
+lines = len(d3)
+row = 1
+zoneCentroid = []
+origins = []
+populations = []
+zoneCentroid.append(d3[0, 0])
+distances = []
+travel_times = []
+for ori in range(lines):
+    origins.append(d3[ori, 1])
+    populations.append(d3[ori, 2])
+
 zone_and_subzones = zoneCentroid + origins
 print(zone_and_subzones)
-populations = [250, 250, 250]
-distances = [[0, 2, 5, 4], [2, 0, 5, 3], [5, 5, 0,1 ], [4, 3, 1, 0]]
-travel_times = [[0, 20, 50, 40], [20, 0, 50, 30], [50, 50, 0,10], [40, 30, 10, 0]]
-vehicleCapacity = 5
-totaltrips = 50
+
+file2 = pd.read_excel("Input.xlsx")
+dat = pd.DataFrame(file2)
+dat2 = dat.to_numpy()
+dat3 = np.array(dat2)
+distance_per_org = []
+travel_times_per_org = []
+dest = 0
+for ori in range(lines+1):
+    for i in range(lines+1):
+        distance_per_org.append(dat3[dest, 2])
+        travel_times_per_org.append(dat3[dest, 3])
+        dest = dest + 1
+    ori = ori + 1
+    distances.append(distance_per_org.copy())
+    travel_times.append(travel_times_per_org.copy())
+    distance_per_org.clear()
+    travel_times_per_org.clear()
+
+
+print(distances)
+print(travel_times)
+
 
 
 # TotalPopulation and proportions
@@ -18,8 +58,8 @@ for i in populations:
 print(totalPopulation)
 proportions = []
 for i in populations:
-    proportions.append(i / totalPopulation)
-print("proportions: ",proportions)
+    proportions.append(i/ totalPopulation)
+print("proportions: ", proportions)
 graduation = []
 value = 0
 i = 0

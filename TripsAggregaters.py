@@ -32,6 +32,7 @@ while (index < totaltrips):
     for x in range(vehicleCapacity):
         gtrips[i].group_origins.append(tripOrigins[index+x])
         x = x + 1
+    print(gtrips[i].group_origins)
     gtrips[i].group_origins.insert(0, zoneCentroid[0])
     gtrips[i].distance_matrix_calculator()
     gtrips[i].minimum_route_distance_calculator()
